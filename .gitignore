@@ -55,3 +55,8 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# In case of local database
+*.sqlite3
+
+local_settings.py
