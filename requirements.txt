@@ -2,5 +2,6 @@ django-suit==0.2.15
 greenlet==0.4.9
 msgpack-python==0.4.6
 wheel==0.24.0
+django-flat-theme=1.1.1
 
 -r djangobb/requirements.txt
