@@ -86,6 +86,10 @@ TEMPLATES = [
     },
 ]
 
+STATICFILES_DIRS = (
+    'delegues/static/',
+)
+
 WSGI_APPLICATION = 'delegues.wsgi.application'
 
 
