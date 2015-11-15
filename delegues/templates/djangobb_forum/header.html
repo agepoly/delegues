@@ -3,55 +3,59 @@
 
 <div id="djangobbwrap">
 <div id="djangobbindex" class="djangobb">
-<div id="brdheader" class="block">
-	<div class="box">
-		<div id="brdtitle" class="inbox">
-			<h1><span><a href="{% url 'djangobb:index' %}">{{ forum_settings.HEADER|safe }}</a></span></h1>
-			<p><span>{{ forum_settings.TAGLINE|safe }}</span></p>
-		</div>
-		<div id="brdmenu" class="inbox">
-			<ul>
-			{% block menu %}
-				<li id="navindex"><a href="{% url 'djangobb:index' %}">{% trans "Index" %}</a></li>
-				<li id="navuserlist"><a href="{% url 'djangobb:forum_users' %}">{% trans "User list" %}</a></li>
-				<li id="navsearch"><a href="{% url 'djangobb:search' %}">{% trans "Search" %}</a></li>
-				{% if user.is_superuser %}
-					<li id="navadmin"><a href="{% url 'admin:index' %}">{% trans "Administration" %}</a></li>
-				{% endif %}
-				{% if user.is_authenticated %}
-					<li id="navprofile"><a href="{% url 'djangobb:forum_profile' user.username %}">{% trans "Profile" %}</a></li>
-					{% if forum_settings.PM_SUPPORT %}
-						<li id="navpm"><a href="{% url 'messages_inbox' %}">{% trans "PM" %}</a></li>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'djangobb:index' %}">{{ forum_settings.HEADER|safe }}</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<p class="navbar-text">{{ forum_settings.TAGLINE|safe }}</p>
+      <ul class="nav navbar-nav">
+        {% block menu %}
+					<li><a href="{% url 'djangobb:index' %}">{% trans "Index" %}</a></li>
+					<li><a href="{% url 'djangobb:forum_users' %}">{% trans "User list" %}</a></li>
+					<li><a href="{% url 'djangobb:search' %}">{% trans "Search" %}</a></li>
+					{% if user.is_superuser %}
+						<li><a href="{% url 'admin:index' %}">{% trans "Administration" %}</a></li>
 					{% endif %}
-				{% endif %}
-			{% endblock %}
-			</ul>
-		</div>
-		<div id="brdwelcome" class="inbox">
-			<ul class="conl">
-				{% if user.is_authenticated %}
-					<li>{% trans "Logged in as" %} <strong>{{ user.username }}</strong></li>
-					<li>{% trans "Last visit:" %} {% forum_time user.last_login %}</li>
-					{% if forum_settings.PM_SUPPORT and messages_inbox_count > 0 %}
-						<ul><li class="pmlink"><strong><a href="{% url 'messages_inbox' %}">{% trans "There are new messages" %} ({{ messages_inbox_count }})</a></strong></li></ul>
+					{% if user.is_authenticated %}
+						<li><a href="{% url 'djangobb:forum_profile' user.username %}">{% trans "Profile" %}</a></li>
+						{% if forum_settings.PM_SUPPORT %}
+							<li><a href="{% url 'messages_inbox' %}">{% trans "PM" %}</a></li>
+						{% endif %}
 					{% endif %}
-				{% else %}
-					<li>{% trans "You are not logged in." %}</li>
-				{% endif %}
-				{% if user.is_superuser and reports %}
-					<li class="reportlink"><strong><a href="{% url 'admin:index' %}">{% trans "There are new reports" %} ({% new_reports %})</a></strong></li>
-				{% endif %}
-			</ul>
-			{% if user.is_authenticated %}
-				<ul class="conr">
+				{% endblock %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+				{% if user.is_authenticated %}
+					<li><p class="navbar-text">{% trans "Logged in as" %} <strong>{{ user.username }}</strong></p></li>
 					<li><a href="{% url 'djangobb:search' %}?action=show_new">{% trans "Show new posts since last visit" %}</a></li>
 					<li><a href="{% url 'djangobb:misc' %}?action=markread">{% trans "Mark all topics as read" %}</a></li>
-				</ul>
-			{% endif %}
-			<div class="clearer"></div>
-		</div>
-	</div>
-</div>
+
+					<!--<li><p class="navbar-text">{% trans "Last visit:" %} {% forum_time user.last_login %}</p></li>-->
+					{% if forum_settings.PM_SUPPORT and messages_inbox_count > 0 %}
+						<ul><li class="pmlink"><p class="navbar-text"><strong><a href="{% url 'messages_inbox' %}">{% trans "There are new messages" %} ({{ messages_inbox_count }})</a></strong></p></li></ul>
+					{% endif %}
+				{% else %}
+					<li><p class="navbar-text">{% trans "You are not logged in." %}</p></li>
+				{% endif %}
+				{% if user.is_superuser and reports %}
+					<li class="reportlink"><p class="navbar-text"><strong><a href="{% url 'admin:index' %}">{% trans "There are new reports" %} ({% new_reports %})</a></strong></p></li>
+				{% endif %}
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
 {% if forum_settings.NOTICE %}
 	<div id="announce" class="block">
