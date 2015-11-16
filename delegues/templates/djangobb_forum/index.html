@@ -37,37 +37,56 @@
 {% endblock %}
 
 {% block content %}
-<div id="idx1" class="blocktable">
-{% for iter in cats %}
-	<h2 id="category_head_{{ iter.id }}">
-		<a class="toggle" href="#">Toggle shoutbox</a>
-		<span>
-			{{ iter.cat }}
-		</span>
-	</h2>
-	<div class="box" id="category_body_{{ iter.id }}">
-		<div class="inbox">
-			<table cellspacing="0">
-				<thead>
-					<tr>
-						<th class="tcl" scope="col">{% trans "Forum" %}</th>
-						<th class="tc2" scope="col">{% trans "Topics" %}</th>
-						<th class="tc3" scope="col">{% trans "Posts" %}</th>
-						<th class="tcr" scope="col">{% trans "Last post" %}</th>
-					</tr>
-				</thead>
-				<tbody>
-				{% for forum in iter.forums %}
-					{% include 'djangobb_forum/forum_row.html' %}
-				{% endfor %}
-				</tbody>
-			</table>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-8">
+			{% for iter in cats %}
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">{{ iter.cat }}</h3>
+				</div>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>{% trans "Forum" %}</th>
+							<th>{% trans "Topics" %}</th>
+							<th>{% trans "Posts" %}</th>
+							<th>{% trans "Last post" %}</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for forum in iter.forums %}
+						{% include 'djangobb_forum/forum_row.html' %}
+					{% endfor %}
+					</tbody>
+  			</table>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+  		<div class="panel-body">
+			{% if user.is_authenticated %}
+			<p><a href="{% url 'djangobb:search' %}?action=show_new">{% trans "Show new posts since last visit" %}</a></p>
+			<p><a href="{% url 'djangobb:misc' %}?action=markread">{% trans "Mark all topics as read" %}</a></p>
+
+			<p>{% trans "Last visit:" %} {% forum_time user.last_login %}</p>
+			{% if forum_settings.PM_SUPPORT and messages_inbox_count > 0 %}
+				<p><strong><a href="{% url 'messages_inbox' %}">{% trans "There are new messages" %} ({{ messages_inbox_count }})</a></strong></p>
+			{% endif %}
+		{% endif %}
+		{% if user.is_superuser and reports %}
+			<p><strong><a href="{% url 'admin:index' %}">{% trans "There are new reports" %} ({% new_reports %})</a></strong></p>
+		{% endif %}
+		</div>
+		</div>
+
 		</div>
 	</div>
-{% endfor %}
 </div>
 
-<div id="brdstats" class="block">
+<!--<div id="brdstats" class="block">
 	<h2><span>{% trans "Board information" %}</span></h2>
 	<div class="box">
 		<div class="inbox">
@@ -93,13 +112,13 @@
             {% endif %}
 		</div>
 	</div>
-</div>
+</div>-->
 {% endblock %}
 
 {% block lofi %}
-{% if forum_settings.LOFI_SUPPORT %}
+<!--{% if forum_settings.LOFI_SUPPORT %}
     <p class="lofi">
         <a href="{% url 'djangobb:lofi_index' %}">Lo-Fi Version</a>
     </p>
-{% endif %}
+{% endif %}-->
 {% endblock %}

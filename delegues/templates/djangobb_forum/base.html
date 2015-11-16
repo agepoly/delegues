@@ -9,7 +9,6 @@
 	<meta name="keywords" content="{{ forum_settings.FORUM_META_KEYWORDS }}" />
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-	{% set_theme_style user %}
 
 	<link rel="alternate" type="application/atom+xml" href="{% url 'djangobb:forum_posts_feed' %}" title="{% trans "Latest posts on forum" %}" />
 	<link rel="alternate" type="application/atom+xml" href="{% url 'djangobb:forum_topics_feed' %}" title="{% trans "Latest topics on forum" %}" />
@@ -77,28 +76,34 @@
 	{% block pre_content %}{% endblock %}
 	{% block content %}{% endblock %}
 	{% block post_content %}{% endblock %}
-	<div id="brdfooter" class="block">
-	<h2><span>{% trans "Board footer" %}</span></h2>
-        <div class="box">
-            <div class="inbox">
-                {% block controls %}
-                    <dl id="searchlinks" class="conl">
-                        <dt><strong>{% trans "Search links" %}</strong></dt>
-                        <dd><a href="{% url 'djangobb:search' %}?action=show_24h">{% trans "Show recent posts" %}</a></dd>
-                        <dd><a href="{% url 'djangobb:search' %}?action=show_unanswered">{% trans "Show unanswered posts" %}</a></dd>
-                        {% if user.is_authenticated %}
-                        <dd><a href="{% url 'djangobb:search' %}?action=show_subscriptions">{% trans "Show your subscribed topics" %}</a></dd>
-                        <dd>{% trans "Show your" %} <a href="{% url 'djangobb:search' %}?action=show_user&show_as=topics">{% trans "topics" %}</a>/<a href="{% url 'djangobb:search' %}?action=show_user&show_as=posts">{% trans "posts" %}</a></dd>
-                        {% endif %}
-                    </dl>
-                {% endblock controls %}
-                <p class="conr">Powered by <a href="http://djangobb.org/">DjangoBB</a></p>
-                <div class="clearer"></div>
-                {% block lofi %}
-                {% endblock lofi%}
-            </div>
-        </div>
-    </div>
+
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="https://github.com/agepoly/delegues">Made with love by AGEPINFO</a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav navbar-right">
+					<li><a href="{% url 'djangobb:search' %}?action=show_24h">{% trans "Show recent posts" %}</a></li>
+					<li><a href="{% url 'djangobb:search' %}?action=show_unanswered">{% trans "Show unanswered posts" %}</a></li>
+					{% if user.is_authenticated %}
+					<li><a href="{% url 'djangobb:search' %}?action=show_subscriptions">{% trans "Show your subscribed topics" %}</a></li>
+					<li><p class="navbar-text">{% trans "Show your" %} <a href="{% url 'djangobb:search' %}?action=show_user&show_as=topics">{% trans "topics" %}</a>/<a href="{% url 'djangobb:search' %}?action=show_user&show_as=posts">{% trans "posts" %}</a></p></li>
+					{% endif %}
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+
 </div>
 </div>
 </body>
