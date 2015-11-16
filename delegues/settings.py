@@ -133,3 +133,10 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+
+# Forum settings
+
+DJANGOBB_FORUM_BASE_TITLE = 'Plateforme des délégués'
+DJANGOBB_HEADER = 'AGEPolytique'
+DJANGOBB_TAGLINE = "La plateforme des délégués de l'EPFL"
