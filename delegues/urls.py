@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'', include('djangobb_forum.urls', namespace='djangobb'))
+    url(r'', include('djangobb_forum.urls', namespace='djangobb')),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
 ]
