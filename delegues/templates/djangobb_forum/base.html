@@ -9,6 +9,7 @@
 	<meta name="keywords" content="{{ forum_settings.FORUM_META_KEYWORDS }}" />
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
+	{% comment %} {% set_theme_style user %} {% endcomment %}
 
 	<link rel="alternate" type="application/atom+xml" href="{% url 'djangobb:forum_posts_feed' %}" title="{% trans "Latest posts on forum" %}" />
 	<link rel="alternate" type="application/atom+xml" href="{% url 'djangobb:forum_topics_feed' %}" title="{% trans "Latest topics on forum" %}" />
@@ -94,12 +95,29 @@
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav navbar-right">
-					<li><a href="{% url 'djangobb:search' %}?action=show_24h">{% trans "Show recent posts" %}</a></li>
-					<li><a href="{% url 'djangobb:search' %}?action=show_unanswered">{% trans "Show unanswered posts" %}</a></li>
-					{% if user.is_authenticated %}
-					<li><a href="{% url 'djangobb:search' %}?action=show_subscriptions">{% trans "Show your subscribed topics" %}</a></li>
-					<li><p class="navbar-text">{% trans "Show your" %} <a href="{% url 'djangobb:search' %}?action=show_user&show_as=topics">{% trans "topics" %}</a>/<a href="{% url 'djangobb:search' %}?action=show_user&show_as=posts">{% trans "posts" %}</a></p></li>
-					{% endif %}
+					<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Show <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+						<li><a href="{% url 'djangobb:search' %}?action=show_24h">{% trans "Show recent posts" %}</a></li>
+						<li><a href="{% url 'djangobb:search' %}?action=show_unanswered">{% trans "Show unanswered posts" %}</a></li>
+						{% if user.is_authenticated %}
+						<li><a href="{% url 'djangobb:search' %}?action=show_subscriptions">{% trans "Show your subscribed topics" %}</a></li>
+						<li role="separator" class="divider"></li>
+						<li><p class="navbar-text">{% trans "Show your" %} <a href="{% url 'djangobb:search' %}?action=show_user&show_as=topics">{% trans "topics" %}</a>/<a href="{% url 'djangobb:search' %}?action=show_user&show_as=posts">{% trans "posts" %}</a></p></li>
+						{% endif %}
+          </ul>
+        </li>
+				{% if user.is_authenticated %}
+				<li><a href="{% url 'djangobb:search' %}?action=show_new">{% trans "Show new posts since last visit" %}</a></li>
+				<li><a href="{% url 'djangobb:misc' %}?action=markread">{% trans "Mark all topics as read" %}</a></li>
+				<li><p class="navbar-text">{% trans "Last visit:" %} {% forum_time user.last_login %}</p></li>
+				{% if forum_settings.PM_SUPPORT and messages_inbox_count > 0 %}
+					<li><strong><a href="{% url 'messages_inbox' %}">{% trans "There are new messages" %} ({{ messages_inbox_count }})</a></strong></li>
+				{% endif %}
+			{% endif %}
+			{% if user.is_superuser and reports %}
+				<li><strong><a href="{% url 'admin:index' %}">{% trans "There are new reports" %} ({% new_reports %})</a></strong></li>
+			{% endif %}
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
