@@ -9,27 +9,36 @@
 <div class="linkst">
 	<div class="inbox">
 		<div class="pagelink conl">{% paginate %}</div>
+		<div class="container-fluid">
+		<ol class="breadcrumb">
+			<li><a href="{% url 'djangobb:index' %}">{% trans "Root" %}</a></li>
+			<li class="active">{{ forum.name }}</li>
+		</ol>
 		{% if user.is_authenticated %}
-			<p class="postlink conr"><a href="{% url 'djangobb:add_topic' forum.id %}">{% trans "New topic" %}</a></p>
+			<div class="container-fluid">
+			<a class="btn btn-default" href="{% url 'djangobb:add_topic' forum.id %}" role="button">{% trans "New topic" %}</a>
+			</div>
 		{% endif %}
-		<ul><li><a href="{% url 'djangobb:index' %}">{% trans "Root" %}</a> </li><li>&raquo; {{ forum.name }}</li></ul>
+		</div>
 		<div class="clearer"></div>
 	</div>
 </div>
 <div id="vf" class="blocktable">
+	<div class="container-fluid">
 	<h2>
 		<a href="{% url 'djangobb:forum_forum_feed' forum.id %}"><img src="{{ STATIC_URL }}djangobb_forum/img/feed-icon-small.png"  alt="[RSS Feed]" title="[RSS Feed]" class="rss" /></a>
 		<b><span>{{ forum.name }}</span></b>
 	</h2>
 	<div class="box">
 		<div class="inbox">
-			<table cellspacing="0">
+			<div class="container-fluid">
+			<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
-					<th class="tcl" scope="col">{% trans "Topic" %}</th>
-					<th class="tc2" scope="col">{% trans "Replies" %}</th>
-					<th class="tc3" scope="col">{% trans "Views" %}</th>
-					<th class="tcr" scope="col">{% trans "Last post" %}</th>
+					<td class="col-md-8">{% trans "Topic" %}</td>
+					<td class="col-md-1">{% trans "Replies" %}</td>
+					<td class="col-md-1">{% trans "Views" %}</td>
+					<td class="col-md-2">{% trans "Last post" %}</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -61,72 +70,26 @@
 			{% endif %}
 			</tbody>
 			</table>
+			</div>
 		</div>
 	</div>
+</div>
 </div>
 <div class="linkst">
 	<div class="inbox">
 		<div class="pagelink conl">{% paginate %}</div>
+		<div class="container-fluid">
 		{% if user.is_authenticated %}
-			<p class="postlink conr"><a href="{% url 'djangobb:add_topic' forum.id %}">{% trans "New topic" %}</a></p>
+			<div class="container-fluid">
+			<a class="btn btn-default" href="{% url 'djangobb:add_topic' forum.id %}" role="button">{% trans "New topic" %}</a>
+			</div> </br>
 		{% endif %}
-		<ul><li><a href="{% url 'djangobb:index' %}">{% trans "Root" %}</a> </li><li>&raquo; {{ forum.name }}</li></ul>
+		<ol class="breadcrumb">
+			<li><a href="{% url 'djangobb:index' %}">{% trans "Root" %}</a></li>
+			<li class="active">{{ forum.name }}</li>
+		</ol>
+		</div>
 		<div class="clearer"></div>
-	</div>
-</div>
-
-
-
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-8">
-			<ol class="breadcrumb">
-  			<li><a href="#">Home</a></li>
-  			<li><a href="#">Library</a></li>
-  			<li class="active">Data</li>
-			</ol>
-			{% for iter in cats %}
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">{{ iter.cat }}</h3>
-				</div>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>{% trans "Forum" %}</th>
-							<th>{% trans "Topics" %}</th>
-							<th>{% trans "Posts" %}</th>
-							<th>{% trans "Last post" %}</th>
-						</tr>
-					</thead>
-					<tbody>
-					{% for forum in iter.forums %}
-						{% include 'djangobb_forum/forum_row.html' %}
-					{% endfor %}
-					</tbody>
-  			</table>
-			</div>
-			{% endfor %}
-		</div>
-		<div class="col-md-4">
-			<div class="panel panel-default">
-  		<div class="panel-body">
-			{% if user.is_authenticated %}
-			<p><a href="{% url 'djangobb:search' %}?action=show_new">{% trans "Show new posts since last visit" %}</a></p>
-			<p><a href="{% url 'djangobb:misc' %}?action=markread">{% trans "Mark all topics as read" %}</a></p>
-
-			<p>{% trans "Last visit:" %} {% forum_time user.last_login %}</p>
-			{% if forum_settings.PM_SUPPORT and messages_inbox_count > 0 %}
-				<p><strong><a href="{% url 'messages_inbox' %}">{% trans "There are new messages" %} ({{ messages_inbox_count }})</a></strong></p>
-			{% endif %}
-		{% endif %}
-		{% if user.is_superuser and reports %}
-			<p><strong><a href="{% url 'admin:index' %}">{% trans "There are new reports" %} ({% new_reports %})</a></strong></p>
-		{% endif %}
-		</div>
-		</div>
-
-		</div>
 	</div>
 </div>
 {% endblock %}
