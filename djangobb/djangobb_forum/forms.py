@@ -289,7 +289,7 @@ class UploadAvatarForm(forms.ModelForm):
 
 
 class UserSearchForm(forms.Form):
-    username = forms.CharField(required=False, label=_('Username'))
+    username = forms.CharField(required=False, label=_('Username'), widget=forms.TextInput(attrs={'class' : 'form-control'}))
     #show_group = forms.ChoiceField(choices=SHOW_GROUP_CHOICES)
     sort_by = forms.ChoiceField(choices=SORT_USER_BY_CHOICES, label=_('Sort by'))
     sort_dir = forms.ChoiceField(choices=SORT_DIR_CHOICES, label=_('Sort order'))
@@ -494,4 +494,3 @@ class PollForm(forms.ModelForm):
         answers = self.cleaned_data["answers"]
         for answer in answers:
             PollChoice.objects.create(poll=poll, choice=answer)
-
