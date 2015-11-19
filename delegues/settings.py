@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'delegues',
     'flat',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,7 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'pagination',
-    'djangobb_forum'
+    'djangobb_forum',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -104,6 +105,20 @@ HAYSTACK_CONNECTIONS = {
 
     }
 }
+
+# Tequila backend
+AUTH_USER_MODEL = 'delegues.DegUser'
+AUTHENTICATION_BACKENDS = ('delegues.tequila.Backend',)
+LOGIN_URL = '/login'
+
+TEQUILA_SERVER = 'https://tequila.epfl.ch'  # Url of tequila server
+TEQUILA_SERVICE = 'Forum des Délégués'  # Title used in tequila
+TEQUILA_AUTOCREATE = True  # Auto create users ?
+TEQUILA_UPDATE = True  # Update users ?
+TEQUILA_FAILURE = '/failure'  # Where to redirect user if there is a problem
+
+# LDAP group that can access the forum
+CAN_LOGIN = ["delegues-classes"]
 
 
 # Internationalization
