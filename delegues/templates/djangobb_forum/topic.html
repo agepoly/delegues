@@ -123,6 +123,7 @@
 			</div>
 			<div class="postright">
 				<h3>{{ post.topic.name }}</h3>
+
 				<div class="postmsg">
 					<p class="post_body_html">{{ post.body_html|safe }}</p>
 					{% if not user.is_authenticated or user.forum_profile.show_signatures %}
@@ -185,20 +186,25 @@
 				</ol>
 			</div>
 		{% if user.is_authenticated %}
+		<div class = "container-fluid">
 			{% if subscribed %}
 				<a class="subscribelink clearb" href="{% url 'djangobb:forum_delete_subscription' topic.id %}?from_topic">{% trans "Unsubscribe" %}</a>
 			{% else %}
 				<a class="subscribelink clearb" href="{% url 'djangobb:forum_add_subscription' topic.id %}">{% trans "Subscribe" %}</a>
 			{% endif %}
 		{% endif %}
+		</div>
 		<div class="clearer"></div>
 	</div>
 </div>
 
 {% if reply_form %}
+
+	 <div class="col-md-8">
     {% with form=reply_form %}
         {% include "djangobb_forum/includes/post_form.html" %}
     {% endwith %}
+	</div>
 {% endif %}
 
 {% endblock content%}
