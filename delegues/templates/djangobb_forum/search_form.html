@@ -3,7 +3,86 @@
 {% load i18n %}
 
 {% block content %}
-<div id="searchform" class="blockform">
+
+<div class="container-fluid" id="searchform">
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">{% trans "Search" %}</h3>
+				</div>
+				<div class="panel-body">
+					<form id="search" method="get" action="">
+						<input type="hidden" name="action" value="search" />
+
+
+					<h4>{% trans "Enter your search criteria" %}</h4>
+
+						<div class="form-inline">
+							<label>{{ form.keywords.label }}
+								<br />{{ form.keywords }}
+								<br />
+							</label>
+							<label>{{ form.author.label }}
+								<br /> {{ form.author }}
+								<br />
+							</label>
+							<label>{{ form.sort_dir.label }}
+								<br /> {{ form.sort_dir }}
+								<br />
+							</label>
+							<p>{% trans "To search by keyword, enter a term or terms to search for. Separate terms with spaces. To search by author enter the username of the author whose posts you wish to search for." %}</p>
+						</div>
+
+							<h4>{% trans "Select where to search" %}</h4>
+						<div class="form-inline">
+							<label>{{ form.forum.label }}
+							<br />
+							<select id="forum" name="forum" class="form-control">
+								<option value="0">{% trans "All forums" %}</option>
+								{% for category in categories %}
+								<optgroup label="{{ category }}">
+									{% for forum in category.forums.all %}
+									<option value="{{ forum.id }}">{{ forum }}</option>
+									{% endfor %}
+								</optgroup>
+								{% endfor %}
+							</select>
+							<br /></label>
+							<label>{{ form.search_in.label }}
+								<br /> {{ form.search_in }}
+								<br />
+							</label>
+							<p>{% trans "Choose in which forum you would like to search and if you want to search in topic subjects, message text or both." %}</p>
+						</div>
+
+						<h4>{% trans "Select how to view search results" %}</h4>
+						<div class="form-inline">
+							<label>{{ form.sort_by.label }}
+								<br />{{ form.sort_by }}
+								<br />
+							</label>
+							<label>{{ form.sort_dir.label }}
+								<br /> {{ form.sort_dir }}
+								<br />
+							</label>
+							<label>{{ form.show_as.label }}
+								<br /> {{ form.show_as }}
+								<br />
+							</label>
+							<p>{% trans "You can choose how you wish to sort and show your results." %}</p>
+						</div>
+
+						<p><input type="submit" value="{% trans "Submit" %}" accesskey="s" /></p>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<!--<div id="searchform" class="blockform">
 	<h2><span>{% trans "Search" %}</span></h2>
 	<div class="box">
 		<form id="search" method="get" action="">
@@ -70,7 +149,8 @@
 			<p><input type="submit" value="{% trans "Submit" %}" accesskey="s" /></p>
 		</form>
 	</div>
-</div>
+</div>-->
+
 {% endblock %}
 
 {% block controls %}
