@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import re
+import datetime
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
@@ -117,8 +119,22 @@ TEQUILA_AUTOCREATE = True  # Auto create users ?
 TEQUILA_UPDATE = True  # Update users ?
 TEQUILA_FAILURE = '/failure'  # Where to redirect user if there is a problem
 
-# LDAP group that can access the forum
-CAN_LOGIN = ["delegues-classes"]
+LDAP = "ldaps://ldap.epfl.ch:636"
+
+LDAP_REFRESH = datetime.timedelta(weeks=1)
+
+# LDAP ou=.. filters
+AUTHORIZED_ORGANISATIONS = [re.compile(r) for r in [
+    r'agepoly', # Comité
+    r'agepolytique', # Agepolitique
+    r'agepinfo', # Agepinfo (for admin purpose)
+    r'ae', # EPFL Assembly
+    r'cf-\w+', # Faculty Council # TODO: handle CF-{{section_name}}
+]]
+
+AUTHORIZED_GROUPS = [re.compile(r) for r in [
+    r'delegues-classes'
+]]
 
 
 # Internationalization

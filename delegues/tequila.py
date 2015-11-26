@@ -12,7 +12,7 @@ class Backend(object):
 
     def get_user(self, user_id):
         try:
-            return DeleguesUser.objects.get(pk=user_id)
+            return DegUser.objects.get(pk=user_id)
         except DegUser.DoesNotExist:
             return None
 
@@ -46,7 +46,6 @@ class Backend(object):
                 user.last_name = name
                 user.email = email
                 user.save()
-                #Add user to representant
             else:
                 user = None
 
