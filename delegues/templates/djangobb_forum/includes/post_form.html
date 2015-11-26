@@ -1,7 +1,7 @@
 {% load i18n %}
 <div class="blockform" id="reply">
 
-
+<div class="container-fluid">
   <div class="panel panel-primary">
     <div class="panel-heading"> <h3 class="panel-title">{% if forum %}{% trans "New topic" %}{% else %}{% trans "New reply" %}{% endif %}</h3></div>
     <div class="panel-body">
@@ -28,6 +28,8 @@
                       </div>
                   </fieldset>
               </div>
+              <h4>{% trans "Create a poll" %}</h4>
+              {{ create_poll_form }}
               {% endif %}
 
               <div class="inform">
@@ -47,23 +49,23 @@
                   </fieldset>
               </div>
               {% if forum_settings.ATTACHMENT_SUPPORT %}
-              <div class="inform">
-                  <fieldset>
-                      <legend>{% trans "Attachment" %}</legend>
-                      <div class="infldset">
-                          {{ form.attachment.errors }}
-                          <div class="rbox">
-                              {{ form.attachment }}
-                          </div>
-                      </div>
-                  </fieldset>
+              <div class="form-group">
+                <legend>{% trans "Attachment" %}</legend>
+                <div class="infldset">
+                    {{ form.attachment.errors }}
+                    <div class="rbox">
+                        {{ form.attachment }}
+                    </div>
+                </div>
               </div>
               {% endif %}
-              <p><input type="submit" name="{{ form.FORM_NAME }}" value="{% trans "Submit" %}" /><a href="{{ back_url|default_if_none:"javascript:history.go(-1)" }}">{% trans "Go back" %}</a></p>
+              <button type="submit" class="btn btn-lg btn-default" name="{{ form.FORM_NAME }}">{% trans "Submit" %}</button>
+              <a href="{{ back_url|default_if_none:"javascript:history.go(-1)" }}" class="btn btn-warning">{% trans "Go back" %}</a>
           </form>
       </div>
 
   </div>
   </div>
-  
+
+</div>
 </div>

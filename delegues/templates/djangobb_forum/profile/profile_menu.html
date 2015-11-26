@@ -1,20 +1,15 @@
 {% load i18n %}
-	<div class="blockmenu">
-		<h2><span>{% trans "Profile menu" %}</span></h2>
-		<div class="box">
-			<div class="inbox">
-				<ul>
-					<li {%if active_menu == "essentials" %}class="isactive"{% endif %}><a href="{% url 'djangobb:forum_profile_essentials' profile %}">{% trans "Essentials" %}</a></li>
-					<li {%if active_menu == "personal" %}class="isactive"{% endif %}><a href="{% url 'djangobb:forum_profile_personal' profile %}">{% trans "Personal" %}</a></li>
-					<li {%if active_menu == "messaging" %}class="isactive"{% endif %}><a href="{% url 'djangobb:forum_profile_messaging' profile %}">{% trans "Messaging" %}</a></li>
-					<li {%if active_menu == "personality" %}class="isactive"{% endif %}><a href="{% url 'djangobb:forum_profile_personality' profile %}">{% trans "Personality" %}</a></li>
-					<li {%if active_menu == "display" %}class="isactive"{% endif %}><a href="{% url 'djangobb:forum_profile_display' profile %}">{% trans "Display" %}</a></li>
-					<li {%if active_menu == "privacy" %}class="isactive"{% endif %}><a href="{% url 'djangobb:forum_profile_privacy' profile %}">{% trans "Privacy" %}</a></li>
-					{# if user.is_superuser #}
-					<!--li {% if active_menu == "admin" %}class="isactive"{% endif %}><a href="{% url 'djangobb:forum_profile' profile %}?section=admin">{% trans "Administration" %}</a></li-->
-					{# endif #}
 
-				</ul>
-			</div>
-		</div>
+<div class="col-md-3">
+	<div class="list-group">
+	  <a class="list-group-item{%if active_menu == "essentials" %} active"{% else %}"{% endif %} href="{% url 'djangobb:forum_profile_essentials' profile %}">{% trans "Essentials" %}</a>
+	  <a class="list-group-item{%if active_menu == "personal" %} active"{% else %}"{% endif %} href="{% url 'djangobb:forum_profile_personal' profile %}">{% trans "Personal" %}</a>
+	  <a class="list-group-item{%if active_menu == "messaging" %} active"{% else %}"{% endif %} href="{% url 'djangobb:forum_profile_messaging' profile %}">{% trans "Messaging" %}</a>
+	  <a class="list-group-item{%if active_menu == "personality" %} active"{% else %}"{% endif %} href="{% url 'djangobb:forum_profile_personality' profile %}">{% trans "Personality" %}</a>
+		<a class="list-group-item{%if active_menu == "display" %} active"{% else %}"{% endif %} href="{% url 'djangobb:forum_profile_display' profile %}">{% trans "Display" %}</a>
+		<a class="list-group-item{%if active_menu == "privacy" %} active"{% else %}"{% endif %} href="{% url 'djangobb:forum_profile_privacy' profile %}">{% trans "Privacy" %}</a>
+		{# if user.is_superuser #}
+		<!--a class="list-group-item{% if active_menu == "admin" %}class="isactive"{% endif %} href="{% url 'djangobb:forum_profile' profile %}?section=admin">{% trans "Administration" %}</a-->
+		{# endif #}
 	</div>
+</div>
