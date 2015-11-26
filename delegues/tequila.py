@@ -40,11 +40,11 @@ class Backend(object):
         except DegUser.DoesNotExist:
             # Should we create it ?
             if settings.TEQUILA_AUTOCREATE:
-                user = DegUser()
-                user.username = sciper
+                user = DegUser(username=sciper)
                 user.first_name = firstName
                 user.last_name = name
                 user.email = email
+                user.update_ldap()
                 user.save()
             else:
                 user = None

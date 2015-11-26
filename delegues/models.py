@@ -1,9 +1,12 @@
 
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, PermissionsMixin,
                                         BaseUserManager)
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+
+from delegues.ldap import is_authorized, get_user_info
 
 class DegUserManager(BaseUserManager):
 
@@ -13,12 +16,22 @@ class DegUserManager(BaseUserManager):
         if not username:
             raise ValueError('The given username must be set')
 
+        if not is_authorized(username):
+            return None
+
         user = self.model(username=username, is_active=True,
                           is_superuser=is_superuser, last_login=now,
                           date_joined=now, is_staff=is_superuser,
                           **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
+
+        return user
+
+    def get(self, *args, **kwargs):
+        user = super().get(*args, **kwargs)
+        if timezone.now() - user.last_ldap_check > settings.LDAP_REFRESH:
+            user.update_ldap()
 
         return user
 
@@ -41,6 +54,7 @@ class DegUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(_('staff status'), default=False,
         help_text=_('Designates whether the user can log into this admin '
                     'site.'))
+    last_ldap_check = models.DateTimeField(_('last_ldap_check'))
 
     objects = DegUserManager()
 
@@ -49,6 +63,10 @@ class DegUser(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _('User')
         verbose_name_plural = _('Users')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.update_ldap()
 
     def get_full_name(self):
         return "{} {}".format(self.first_name, self.last_name)
@@ -61,3 +79,6 @@ class DegUser(AbstractBaseUser, PermissionsMixin):
 
     def get_username(self):
         return self.get_full_name()
+
+    def update_ldap(self):
+        self.last_ldap_check = timezone.now()
