@@ -93,17 +93,17 @@ def moderate(request, forum_id):
             for topic_id in topic_ids:
                 topic = get_object_or_404(Topic, pk=topic_id)
                 topic.delete()
-            messages.success(request, _("Topics deleted"))
+            messages.success(request, _("Topics deleted"), extra_tags='alert alert-success')
             return HttpResponseRedirect(reverse('djangobb:index'))
         elif 'open_topics' in request.POST:
             for topic_id in topic_ids:
                 open_close_topic(request, topic_id, 'o')
-            messages.success(request, _("Topics opened"))
+            messages.success(request, _("Topics opened"), extra_tags='alert alert-success')
             return HttpResponseRedirect(reverse('djangobb:index'))
         elif 'close_topics' in request.POST:
             for topic_id in topic_ids:
                 open_close_topic(request, topic_id, 'c')
-            messages.success(request, _("Topics closed"))
+            messages.success(request, _("Topics closed"), extra_tags='alert alert-success')
             return HttpResponseRedirect(reverse('djangobb:index'))
 
         return render(request, 'djangobb_forum/moderate.html', {'forum': forum,
@@ -196,9 +196,9 @@ def search(request):
             try:
                 search_user = User.objects.get(id=user_id)
             except User.DoesNotExist:
-                messages.error(request, _("Error: User unknown!"))
+                messages.error(request, _("Error: User unknown!"), extra_tags='alert alert-danger')
                 return HttpResponseRedirect(request.path)
-            messages.info(request, _("Filter by user '%(username)s'.") % {'username': search_user.username})
+            messages.info(request, _("Filter by user '%(username)s'.") % {'username': search_user.username}, extra_tags='alert alert-info')
 
         if show_as_posts:
             posts = posts.filter(user__id=user_id)
@@ -274,11 +274,11 @@ def search(request):
     if show_as_posts:
         context["as_topic_url"] = base_url + "topics"
         post_count = context["posts"].count()
-        messages.success(request, _("Found %i posts.") % post_count)
+        messages.success(request, _("Found %i posts.") % post_count, extra_tags='alert alert-success')
     else:
         context["as_post_url"] = base_url + "posts"
         topic_count = context["topics"].count()
-        messages.success(request, _("Found %i topics.") % topic_count)
+        messages.success(request, _("Found %i topics.") % topic_count, extra_tags='alert alert-success')
 
     return render(request, template_name, context)
 
@@ -292,7 +292,7 @@ def misc(request):
         if action == 'markread':
             user = request.user
             PostTracking.objects.filter(user__id=user.id).update(last_read=timezone.now(), topics=None)
-            messages.info(request, _("All topics marked as read."))
+            messages.info(request, _("All topics marked as read."), extra_tags='alert alert-info')
             return HttpResponseRedirect(reverse('djangobb:index'))
 
         elif action == 'report':
@@ -302,7 +302,7 @@ def misc(request):
                 form = build_form(ReportForm, request, reported_by=request.user, post=post_id)
                 if request.method == 'POST' and form.is_valid():
                     form.save()
-                    messages.info(request, _("Post reported."))
+                    messages.info(request, _("Post reported."), extra_tags='alert alert-info')
                     return HttpResponseRedirect(post.get_absolute_url())
                 return render(request, 'djangobb_forum/report.html', {'form':form})
 
@@ -319,9 +319,9 @@ def misc(request):
                                                                   request.user.email)
             try:
                 user.email_user(subject, body, request.user.email)
-                messages.success(request, _("Email send."))
+                messages.success(request, _("Email send."), extra_tags='alert alert-success')
             except Exception:
-                messages.error(request, _("Email could not be sent."))
+                messages.error(request, _("Email could not be sent."), extra_tags='alert alert-danger')
             return HttpResponseRedirect(reverse('djangobb:index'))
 
     elif 'mail_to' in request.GET:
@@ -405,7 +405,7 @@ def show_topic(request, topic_id, full=True):
             reply_form = AddPostForm(request.POST, request.FILES, **post_form_kwargs)
             if reply_form.is_valid():
                 post = reply_form.save()
-                messages.success(request, _("Your reply saved."))
+                messages.success(request, _("Your reply saved."), extra_tags='alert alert-success')
                 return HttpResponseRedirect(post.get_absolute_url())
         else:
             reply_form = AddPostForm(
@@ -432,10 +432,10 @@ def show_topic(request, topic_id, full=True):
                     poll_form = VotePollForm(poll)
             else:
                 if not poll.active:
-                    messages.error(request, _("This poll is not active!"))
+                    messages.error(request, _("This poll is not active!"), extra_tags='alert alert-danger')
                     return HttpResponseRedirect(topic.get_absolute_url())
                 elif has_voted:
-                    messages.error(request, _("You have already vote to this poll in the past!"))
+                    messages.error(request, _("You have already vote to this poll in the past!"), extra_tags='alert alert-danger')
                     return HttpResponseRedirect(topic.get_absolute_url())
 
                 poll_form = VotePollForm(poll, request.POST)
@@ -444,7 +444,7 @@ def show_topic(request, topic_id, full=True):
                     queryset = poll.choices.filter(id__in=ids)
                     queryset.update(votes=F('votes') + 1)
                     poll.users.add(request.user) # save that this user has vote
-                    messages.success(request, _("Your votes are saved."))
+                    messages.success(request, _("Your votes are saved."), extra_tags='alert alert-success')
                     return HttpResponseRedirect(topic.get_absolute_url())
 
     highlight_word = request.GET.get('hl', '')
@@ -505,9 +505,9 @@ def add_topic(request, forum_id):
             post = form.save()
             if poll_form and poll_form.has_data():
                 poll_form.save(post)
-                messages.success(request, _("Topic with poll saved."))
+                messages.success(request, _("Topic with poll saved."), extra_tags='alert alert-success')
             else:
-                messages.success(request, _("Topic saved."))
+                messages.success(request, _("Topic saved."), extra_tags='alert alert-success')
             return HttpResponseRedirect(post.get_absolute_url())
     else:
         form = AddPostForm(
@@ -537,7 +537,7 @@ def upload_avatar(request, username, template=None, form_class=None):
         form = build_form(form_class, request, instance=user.forum_profile)
         if request.method == 'POST' and form.is_valid():
             form.save()
-            messages.success(request, _("Your avatar uploaded."))
+            messages.success(request, _("Your avatar uploaded."), extra_tags='alert alert-success')
             return HttpResponseRedirect(reverse('djangobb:forum_profile', args=[user.username]))
         return render(request, template, {'form': form,
                 'avatar_width': forum_settings.AVATAR_WIDTH,
@@ -546,7 +546,7 @@ def upload_avatar(request, username, template=None, form_class=None):
     else:
         topic_count = Topic.objects.filter(user__id=user.id).count()
         if user.forum_profile.post_count < forum_settings.POST_USER_SEARCH and not request.user.is_authenticated():
-            messages.error(request, _("Please sign in."))
+            messages.error(request, _("Please sign in."), extra_tags='alert alert-danger')
             return HttpResponseRedirect(settings.LOGIN_URL + '?next=%s' % request.path)
         return render(request, template, {'profile': user,
                 'topic_count': topic_count,
@@ -561,7 +561,7 @@ def user(request, username, section='essentials', action=None, template='djangob
         form = build_form(form_class, request, instance=user.forum_profile, extra_args={'request': request})
         if request.method == 'POST' and form.is_valid():
             form.save()
-            messages.success(request, _("User profile saved."))
+            messages.success(request, _("User profile saved."), extra_tags='alert alert-success')
             return HttpResponseRedirect(profile_url)
         return render(request, template, {'active_menu': section,
                 'profile': user,
@@ -571,7 +571,7 @@ def user(request, username, section='essentials', action=None, template='djangob
         template = 'djangobb_forum/user.html'
         topic_count = Topic.objects.filter(user__id=user.id).count()
         if user.forum_profile.post_count < forum_settings.POST_USER_SEARCH and not request.user.is_authenticated():
-            messages.error(request, _("Please sign in."))
+            messages.error(request, _("Please sign in."), extra_tags='alert alert-danger')
             return HttpResponseRedirect(settings.LOGIN_URL + '?next=%s' % request.path)
         return render(request, template, {'profile': user,
                 'topic_count': topic_count,
@@ -605,13 +605,13 @@ def reputation(request, username):
             for reputation_id in reputation_list:
                 reputation = get_object_or_404(Reputation, pk=reputation_id)
                 reputation.delete()
-            messages.success(request, _("Reputation deleted."))
+            messages.success(request, _("Reputation deleted."), extra_tags='alert alert-success')
             return HttpResponseRedirect(reverse('djangobb:index'))
         elif form.is_valid():
             form.save()
             post_id = request.POST['post']
             post = get_object_or_404(Post, id=post_id)
-            messages.success(request, _("Reputation saved."))
+            messages.success(request, _("Reputation saved."), extra_tags='alert alert-success')
             return HttpResponseRedirect(post.get_absolute_url())
         else:
             return render(request, 'djangobb_forum/reputation_form.html', {'form': form})
@@ -638,14 +638,14 @@ def edit_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     topic = post.topic
     if not forum_editable_by(post, request.user):
-        messages.error(request, _("No permissions to edit this post."))
+        messages.error(request, _("No permissions to edit this post."), extra_tags='alert alert-danger')
         return HttpResponseRedirect(post.get_absolute_url())
     form = build_form(EditPostForm, request, topic=topic, instance=post)
     if form.is_valid():
         post = form.save(commit=False)
         post.updated_by = request.user
         post.save()
-        messages.success(request, _("Post updated."))
+        messages.success(request, _("Post updated."), extra_tags='alert alert-success')
         return HttpResponseRedirect(post.get_absolute_url())
 
     return render(request, 'djangobb_forum/edit_post.html', {'form': form,
@@ -667,7 +667,7 @@ def delete_posts(request, topic_id):
                 deleted = True
             delete_post(request, post_id)
         if deleted:
-            messages.success(request, _("Post deleted."))
+            messages.success(request, _("Post deleted."), extra_tags='alert alert-success')
             return HttpResponseRedirect(topic.get_absolute_url())
 
     last_post = topic.posts.latest()
@@ -728,7 +728,7 @@ def move_topic(request):
         from_forum.topic_count = from_forum.topics.count()
         from_forum.post_count = from_forum.posts.count()
         from_forum.save()
-        messages.success(request, _("Topic moved."))
+        messages.success(request, _("Topic moved."), extra_tags='alert alert-success')
         return HttpResponseRedirect(to_forum.get_absolute_url())
 
     return render(request, 'djangobb_forum/move_topic.html', {'categories': Category.objects.all(),
@@ -744,9 +744,9 @@ def stick_unstick_topic(request, topic_id, action):
     if forum_moderated_by(topic, request.user):
         if action == 's':
             topic.sticky = True
-            messages.success(request, _("Topic marked as sticky."))
+            messages.success(request, _("Topic marked as sticky."), extra_tags='alert alert-success')
         elif action == 'u':
-            messages.success(request, _("Sticky flag removed from topic."))
+            messages.success(request, _("Sticky flag removed from topic."), extra_tags='alert alert-success')
             topic.sticky = False
         topic.save()
     return HttpResponseRedirect(topic.get_absolute_url())
@@ -763,11 +763,11 @@ def delete_post(request, post_id):
     if not (request.user.is_superuser or\
         request.user in post.topic.forum.moderators.all() or \
         (post.user == request.user)):
-        messages.success(request, _("You haven't the permission to delete this post."))
+        messages.success(request, _("You haven't the permission to delete this post."), extra_tags='alert alert-success')
         return HttpResponseRedirect(post.get_absolute_url())
 
     post.delete()
-    messages.success(request, _("Post deleted."))
+    messages.success(request, _("Post deleted."), extra_tags='alert alert-success')
 
     try:
         Topic.objects.get(pk=topic.id)
@@ -785,10 +785,10 @@ def open_close_topic(request, topic_id, action):
     if forum_moderated_by(topic, request.user):
         if action == 'c':
             topic.closed = True
-            messages.success(request, _("Topic closed."))
+            messages.success(request, _("Topic closed."), extra_tags='alert alert-success')
         elif action == 'o':
             topic.closed = False
-            messages.success(request, _("Topic opened."))
+            messages.success(request, _("Topic opened."), extra_tags='alert alert-success')
         topic.save()
     return HttpResponseRedirect(topic.get_absolute_url())
 
@@ -807,7 +807,7 @@ def users(request):
 def delete_subscription(request, topic_id):
     topic = get_object_or_404(Topic, pk=topic_id)
     topic.subscribers.remove(request.user)
-    messages.info(request, _("Topic subscription removed."))
+    messages.info(request, _("Topic subscription removed."), extra_tags='alert alert-info')
     if 'from_topic' in request.GET:
         return HttpResponseRedirect(reverse('djangobb:topic', args=[topic.id]))
     else:
@@ -819,7 +819,7 @@ def delete_subscription(request, topic_id):
 def add_subscription(request, topic_id):
     topic = get_object_or_404(Topic, pk=topic_id)
     topic.subscribers.add(request.user)
-    messages.success(request, _("Topic subscribed."))
+    messages.success(request, _("Topic subscribed."), extra_tags='alert alert-success')
     return HttpResponseRedirect(reverse('djangobb:topic', args=[topic.id]))
 
 
