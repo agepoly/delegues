@@ -46,7 +46,7 @@ else:
     PM_SUPPORT = get('DJANGOBB_PM_SUPPORT', True)
 
 # AUTHORITY Extension
-AUTHORITY_SUPPORT = get('DJANGOBB_AUTHORITY_SUPPORT', True)
+AUTHORITY_SUPPORT = get('DJANGOBB_AUTHORITY_SUPPORT', False)
 AUTHORITY_STEP_0 = get('DJANGOBB_AUTHORITY_STEP_0', 0)
 AUTHORITY_STEP_1 = get('DJANGOBB_AUTHORITY_STEP_1', 10)
 AUTHORITY_STEP_2 = get('DJANGOBB_AUTHORITY_STEP_2', 25)
@@ -60,7 +60,7 @@ AUTHORITY_STEP_9 = get('DJANGOBB_AUTHORITY_STEP_9', 500)
 AUTHORITY_STEP_10 = get('DJANGOBB_AUTHORITY_STEP_10', 1000)
 
 # REPUTATION Extension
-REPUTATION_SUPPORT = get('DJANGOBB_REPUTATION_SUPPORT', True)
+REPUTATION_SUPPORT = get('DJANGOBB_REPUTATION_SUPPORT', False)
 
 # ATTACHMENT Extension
 ATTACHMENT_SUPPORT = get('DJANGOBB_ATTACHMENT_SUPPORT', True)
@@ -82,11 +82,11 @@ EMOTION_MAD = get('DJANGOBB_EMOTION_MAD', '<img src="%sdjangobb_forum/img/smilie
 EMOTION_ROLL = get('DJANGOBB_EMOTION_ROLL', '<img src="%sdjangobb_forum/img/smilies/roll.png" />' % settings.STATIC_URL)
 EMOTION_COOL = get('DJANGOBB_EMOTION_COOL', '<img src="%sdjangobb_forum/img/smilies/cool.png" />' % settings.STATIC_URL)
 SMILES = ((r'(:|=)\)', EMOTION_SMILE), #:), =)
-          (r'(:|=)\|',  EMOTION_NEUTRAL), #:|, =| 
+          (r'(:|=)\|',  EMOTION_NEUTRAL), #:|, =|
           (r'(:|=)\(', EMOTION_SAD), #:(, =(
           (r'(:|=)D', EMOTION_BIG_SMILE), #:D, =D
           (r':o', EMOTION_YIKES), # :o, :O
-          (r';\)', EMOTION_WINK), # ;\ 
+          (r';\)', EMOTION_WINK), # ;\
           (r':/', EMOTION_HMM), #:/
           (r':P', EMOTION_TONGUE), # :P
           (r':lol:', EMOTION_LOL),
