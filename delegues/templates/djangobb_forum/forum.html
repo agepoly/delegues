@@ -6,35 +6,26 @@
 {% block title %}{{ forum.name }} / {% endblock %}
 {% block content %}
 {% autopaginate topics forum_settings.FORUM_PAGE_SIZE %}
-<div class="linkst">
-	<div class="inbox">
-		<div class="pagelink conl">{% paginate %}</div>
+<div class="row">
+	<ol class="breadcrumb">
+		<li><a href="{% url 'djangobb:index' %}">{% trans "Root" %}</a></li>
+		<li class="active">{{ forum.name }}</li>
+	</ol>
+	{% if user.is_authenticated %}
 		<div class="container-fluid">
-		<ol class="breadcrumb">
-			<li><a href="{% url 'djangobb:index' %}">{% trans "Root" %}</a></li>
-			<li class="active">{{ forum.name }}</li>
-		</ol>
-		{% if user.is_authenticated %}
-			<div class="container-fluid">
-			<a class="btn btn-default" href="{% url 'djangobb:add_topic' forum.id %}" role="button">{% trans "New topic" %}</a>
-			</div>
-		{% endif %}
+		<a class="btn btn-default" href="{% url 'djangobb:add_topic' forum.id %}" role="button">{% trans "New topic" %}</a>
 		</div>
-		<div class="clearer"></div>
-	</div>
+	{% endif %}
 </div>
-<div id="vf" class="blocktable">
-	<div class="container-fluid">
+<div class="row">
 	<h2>
 		<a href="{% url 'djangobb:forum_forum_feed' forum.id %}"><img src="{{ STATIC_URL }}djangobb_forum/img/feed-icon-small.png"  alt="[RSS Feed]" title="[RSS Feed]" class="rss" /></a>
 		<b><span>{{ forum.name }}</span></b>
 	</h2>
-	<div class="box">
-		<div class="inbox">
-			<div class="container-fluid">
-			<table class="table table-bordered table-striped">
+	<div class="table-responsive">
+		<table class="table table-bordered table-striped">
 			<thead>
-				<tr>
+				<tr class="success">
 					<td class="col-md-8">{% trans "Topic" %}</td>
 					<td class="col-md-1">{% trans "Replies" %}</td>
 					<td class="col-md-1">{% trans "Views" %}</td>
@@ -69,28 +60,19 @@
 				<tr><td class="djangobbcon1" colspan="4">{% trans "Forum is empty." %}</td></tr>
 			{% endif %}
 			</tbody>
-			</table>
-			</div>
-		</div>
+		</table>
 	</div>
 </div>
-</div>
-<div class="linkst">
-	<div class="inbox">
-		<div class="pagelink conl">{% paginate %}</div>
+<div class="row">
+	{% if user.is_authenticated %}
 		<div class="container-fluid">
-		{% if user.is_authenticated %}
-			<div class="container-fluid">
-			<a class="btn btn-default" href="{% url 'djangobb:add_topic' forum.id %}" role="button">{% trans "New topic" %}</a>
-			</div> </br>
-		{% endif %}
-		<ol class="breadcrumb">
-			<li><a href="{% url 'djangobb:index' %}">{% trans "Root" %}</a></li>
-			<li class="active">{{ forum.name }}</li>
-		</ol>
-		</div>
-		<div class="clearer"></div>
-	</div>
+		<a class="btn btn-default" href="{% url 'djangobb:add_topic' forum.id %}" role="button">{% trans "New topic" %}</a>
+		</div> </br>
+	{% endif %}
+	<ol class="breadcrumb">
+		<li><a href="{% url 'djangobb:index' %}">{% trans "Root" %}</a></li>
+		<li class="active">{{ forum.name }}</li>
+	</ol>
 </div>
 {% endblock %}
 

@@ -3,15 +3,23 @@
 {% load i18n %}
 
 {% block content %}
-<div class="linkst">
-	<div class="inbox">
-		{% if forum %}
-		<ul class="start"><li><a href="{% url 'djangobb:index' %}">{% trans "Root" %}</a> </li><li>&raquo; {% link forum %}</li></ul>
-		{% else %}
-			<ul><li><a href="{% url 'djangobb:index' %}">{% trans "Root" %}</a> </li><li>&raquo; {% link topic.forum %}</li><li>&raquo; {{ topic }}</li></ul>
-		{% endif %}
-		<div class="clearer"></div>
-	</div>
+<div class="row">
+	{% if forum %}
+		<ol class="breadcrumb">
+			<li><a href="{% url 'djangobb:index' %}">{% trans "Root" %}</a></li>
+			<li class="active">{{ forum.name }}</li>
+		</ol>
+	{% else %}
+		<ol class="breadcrumb">
+			<li><a href="{% url 'djangobb:index' %}">{% trans "Root" %} </a></li>
+			<li> {% link topic.forum %} </li>
+			<li class="active">{{ topic.name }}
+				<a href="{% url 'djangobb:forum_topic_feed' topic.id %}">
+					<img src="{{ STATIC_URL }}djangobb_forum/img/feed-icon-small.png" alt="[RSS Feed]" title="[RSS Feed]" class="breadcrumb_rss" />
+				</a>
+			</li>
+		</ol>
+	{% endif %}
 </div>
 {% include "djangobb_forum/includes/post_form.html" %}
 {% endblock %}

@@ -6,80 +6,78 @@
 {% block content %}
 {% autopaginate users forum_settings.USERS_PAGE_SIZE %}
 
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12">
+<div class="row">
+	<div class="col-md-12">
 
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">{% trans "User search" %}</h3>
-				</div>
-				<div class="panel-body">
-					<h4>{% trans "Find and sort users" %}</h4>
-					<form method="get" id="userlist" action="">
-						<div class="form-inline">
-							<label>{{ form.username.label }}
-								<br />{{ form.username }}
-								<br />
-							</label>
-							<label>{{ form.sort_by.label }}
-								<br /> {{ form.sort_by }}
-								<br />
-							</label>
-							<label>{{ form.sort_dir.label }}
-								<br /> {{ form.sort_dir }}
-								<br />
-							</label>
-							<p>{% trans "Enter a username to search for. The username field can be left blank. Sort users by name, date registered or number of posts and in ascending/descending order." %}</p>
-						</div>
-						<input type="submit" class="btn btn-default" value="{% trans " Search " %}"/>
-					</form>
-				</div>
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">{% trans "User search" %}</h3>
+			</div>
+			<div class="panel-body">
+				<h4>{% trans "Find and sort users" %}</h4>
+				<form method="get" id="userlist" action="">
+					<div class="form-inline">
+						<label>{{ form.username.label }}
+							<br />{{ form.username }}
+							<br />
+						</label>
+						<label>{{ form.sort_by.label }}
+							<br /> {{ form.sort_by }}
+							<br />
+						</label>
+						<label>{{ form.sort_dir.label }}
+							<br /> {{ form.sort_dir }}
+							<br />
+						</label>
+						<p>{% trans "Enter a username to search for. The username field can be left blank. Sort users by name, date registered or number of posts and in ascending/descending order." %}</p>
+					</div>
+					<input type="submit" class="btn btn-default" value="{% trans " Search " %}"/>
+				</form>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<!--<div class="linkst">
-	<div class="inbox">
-		{% paginate %}
-	</div>
+<!--<div class="linkst">
+<div class="inbox">
+	{% paginate %}
+</div>
 </div>-->
 
 
-	<div class="row">
-		<div class="col-md-12">
+<div class="row">
+	<div class="col-md-12">
 
-			<div class="panel panel-primary">
-				<div class="panel-heading">
-					<h3 class="panel-title">{% trans "User list" %}</h3>
-				</div>
-				<div class="panel-body">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>{% trans "Username" %}</th>
-								<th>{% trans "Title" %}</th>
-								<th>{% trans "Posts" %}</th>
-								<th>{% trans "Registered" %}</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for profile in users %}
-							<tr>
-								<td>{{ profile|profile_link }}</td>
-								<td>{{ profile.forum_profile.status }}</td>
-								<td>{{ profile.forum_profile.post_count }}</td>
-								<td>{{ profile.date_joined|date:"d-m-Y" }}</td>
-							</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">{% trans "User list" %}</h3>
+			</div>
+			<div class="panel-body">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>{% trans "Username" %}</th>
+							<th>{% trans "Title" %}</th>
+							<th>{% trans "Posts" %}</th>
+							<th>{% trans "Registered" %}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for profile in users %}
+						<tr>
+							<td>{{ profile|profile_link }}</td>
+							<td>{{ profile.forum_profile.status }}</td>
+							<td>{{ profile.forum_profile.post_count }}</td>
+							<td>{{ profile.date_joined|date:"d-m-Y" }}</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
-
 </div>
+
 
 
 <!--<div class="linkst">
