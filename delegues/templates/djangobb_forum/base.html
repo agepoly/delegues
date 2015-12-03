@@ -63,36 +63,32 @@
 	{% endif %}
 	{% block extra_meta %}{% endblock %}
 	<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}djangobb_forum/css/bootstrap.css"/>
-	<style>body { padding-bottom: 70px}</style>
+	<style>body { padding-bottom: 70px; padding-top: 70px}</style>
 	<script type="text/javascript" src="{{ STATIC_URL }}djangobb_forum/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<div class="container">
+
     {% include 'djangobb_forum/header.html' %}
 
     {% block messages %}
         {% if messages %}
-        <div id="messages" class="container-fluid">
-            <div class="box">
-                <div class="inbox">
                     {% for message in messages %}
-                        <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+										<div class="row">
+                        <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+										</div>
                     {% endfor %}
-                </div>
-            </div>
-        </div>
         {% endif %}
     {% endblock messages %}
 	{% block pre_content %}{% endblock %}
-	<div class="container">
 	{% block content %}{% endblock %}
-	</div>
 	{% block post_content %}{% endblock %}
 
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->
 	    <div class="navbar-header">
-	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#footer" aria-expanded="false">
 	        <span class="sr-only">Toggle navigation</span>
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
@@ -102,7 +98,7 @@
 	    </div>
 
 	    <!-- Collect the nav links, forms, and other content for toggling -->
-	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	    <div class="collapse navbar-collapse" id="footer">
 	      <ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Show <span class="caret"></span></a>
@@ -131,8 +127,6 @@
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
-
-</div>
 </div>
 </body>
 </html>

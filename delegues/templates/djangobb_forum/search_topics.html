@@ -5,15 +5,11 @@
 
 {% block content %}
 {% autopaginate topics forum_settings.SEARCH_PAGE_SIZE %}
-<div class="linkst">
-	<div class="inbox">
-		<p class="pagelink">{% paginate %}</p>
-		<div class="clearer"></div>
-	</div>
+<div class="row">
+	<a href="{{ as_post_url }}" class="btn btn-default btn-lg btn-block" role="button">{% trans "Show results as post list." %}</a>
 </div>
 
 <div class="row">
-	<a href="{{ as_post_url }}" class="btn btn-default" role="button">{% trans "Show results as post list." %}</a>
 	<div class="panel panel-primary">
 	<div class="panel-heading">
 		<h3 class="panel-title">{% trans "Search results" %}</h3>
