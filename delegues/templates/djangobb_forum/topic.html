@@ -210,11 +210,9 @@
 			</div>
 {% if reply_form %}
 
-	 <div class="row">
-    {% with form=reply_form %}
-        {% include "djangobb_forum/includes/post_form.html" %}
-    {% endwith %}
-	</div>
+	{% with form=reply_form %}
+  	{% include "djangobb_forum/includes/post_form.html" %}
+	{% endwith %}
 {% endif %}
 
 {% endblock content%}

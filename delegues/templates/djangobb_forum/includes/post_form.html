@@ -1,69 +1,54 @@
 {% load i18n %}
-<div class="blockform" id="reply">
-
+<div class="row">
   <div class="panel panel-primary">
     <div class="panel-heading"> <h3 class="panel-title">{% if forum %}{% trans "New topic" %}{% else %}{% trans "New reply" %}{% endif %}</h3></div>
-    <div class="panel-body">
-      <div class="box">
-          <form id="post" action="{{ form_url|default_if_none:"." }}" method="post" enctype="multipart/form-data">
-              {% csrf_token %}
+      <div class="panel-body">
+        <form id="post" action="{{ form_url|default_if_none:"." }}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
 
-              {% if create_poll_form %}
-              <script>{# TODO: move to html head! #}
-                  $(document).ready(function() {
-                      $('.poll .infldset').hide();
-                      $(".poll").click(function() {
-                          $('.poll .infldset').slideDown();
-                      });
-                  });
-              </script>
-              <div class="inform poll">
-                  <fieldset>
-                      <legend>{% trans "Create a poll" %}</legend>
-                      <div class="infldset">
-                          <div class="rbox">
-                              {{ create_poll_form }}
-                          </div>
-                      </div>
-                  </fieldset>
-              </div>
-              <h4>{% trans "Create a poll" %}</h4>
-              {{ create_poll_form }}
-              {% endif %}
+            {% if create_poll_form %}
+            <script>{# TODO: move to html head! #}
+                $(document).ready(function() {
+                    $('.poll .infldset').hide();
+                    $(".poll").click(function() {
+                        $('.poll .infldset').slideDown();
+                    });
+                });
+            </script>
+            <h3>{% trans "Create a poll" %}</h3>
+            {{ create_poll_form }}
+            {% endif %}
 
-              <div class="inform">
-                  <fieldset>
-                      <legend>{% trans "Write your message and submit" %}</legend>
-                      <noscript><h1>Please enable JavaScript!</h1></noscript>
-                      <div class="infldset txtarea">
-                          {% if forum %}
-                              <label><strong>{% trans "Subject" %}</strong><br />{{ form.name.errors }}{{ form.name }}<br /></label>
-                          {% endif %}
-                          <label><strong>{% trans "Message" %}</strong><br />{{ form.body.errors }}{{ form.body }}</label>
-                          <p>
-                              Note: A list of all supported source code highlighter for [code <strong>XXX</strong>]...[/code] can be found here: <a href="http://pygments.org/docs/lexers/">pygments.org</a> (Use 'Short name')
-                          </p>
-                          <label>{{ form.subscribe }}<strong>{% trans "Subscribe this topic" %}</strong>{{ form.subscribe.errors }}<br /></label>
-                      </div>
-                  </fieldset>
-              </div>
-              {% if forum_settings.ATTACHMENT_SUPPORT %}
-              <div class="form-group">
-                <legend>{% trans "Attachment" %}</legend>
-                <div class="infldset">
-                    {{ form.attachment.errors }}
-                    <div class="rbox">
-                        {{ form.attachment }}
+            <div class="inform">
+                <fieldset>
+                    <legend>{% trans "Write your message and submit" %}</legend>
+                    <noscript><h1>Please enable JavaScript!</h1></noscript>
+                    <div class="infldset txtarea">
+                        {% if forum %}
+                            <label><strong>{% trans "Subject" %}</strong><br />{{ form.name.errors }}{{ form.name }}<br /></label>
+                        {% endif %}
+                        <label><strong>{% trans "Message" %}</strong><br />{{ form.body.errors }}{{ form.body }}</label>
+                        <p>
+                            Note: A list of all supported source code highlighter for [code <strong>XXX</strong>]...[/code] can be found here: <a href="http://pygments.org/docs/lexers/">pygments.org</a> (Use 'Short name')
+                        </p>
+                        <label>{{ form.subscribe }}<strong>{% trans "Subscribe this topic" %}</strong>{{ form.subscribe.errors }}<br /></label>
                     </div>
-                </div>
+                </fieldset>
+            </div>
+            {% if forum_settings.ATTACHMENT_SUPPORT %}
+            <div class="form-group">
+              <legend>{% trans "Attachment" %}</legend>
+              <div class="infldset">
+                  {{ form.attachment.errors }}
+                  <div class="rbox">
+                      {{ form.attachment }}
+                  </div>
               </div>
-              {% endif %}
-              <button type="submit" class="btn btn-lg btn-default" name="{{ form.FORM_NAME }}">{% trans "Submit" %}</button>
-              <a href="{{ back_url|default_if_none:"javascript:history.go(-1)" }}" class="btn btn-warning">{% trans "Go back" %}</a>
-          </form>
-      </div>
-
+            </div>
+            {% endif %}
+            <button type="submit" class="btn btn-lg btn-default" name="{{ form.FORM_NAME }}">{% trans "Submit" %}</button>
+            <a href="{{ back_url|default_if_none:"javascript:history.go(-1)" }}" class="btn btn-warning">{% trans "Go back" %}</a>
+        </form>
+    </div>
   </div>
-  </div>
-
 </div>

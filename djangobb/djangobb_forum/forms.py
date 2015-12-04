@@ -445,14 +445,14 @@ class VotePollForm(forms.Form):
 
 
 class PollForm(forms.ModelForm):
-    question = forms.CharField(label=_("Question"))
-    answers = forms.CharField(label=_("Answers"), min_length=2, widget=forms.Textarea,
+    question = forms.CharField(label=_("Question"), widget=forms.TextInput(attrs={'class':"form-control"}))
+    answers = forms.CharField(min_length=2, widget=forms.Textarea(attrs={'class':'form-control', 'placeholder':_("Answers")}),
         help_text=_("Write each answer on a new line.")
     )
-    days = forms.IntegerField(label=_("Days"), required=False, min_value=1,
+    days = forms.IntegerField(label=_("Days"), widget=forms.NumberInput(attrs={'class':'form-control'}), required=False, min_value=1,
         help_text=_("Number of days for this poll to run. Leave empty for never ending poll.")
     )
-    choice_count = forms.IntegerField(label=_("Choice count"), required=True, initial=1, min_value=1,
+    choice_count = forms.IntegerField(label=_("Choice count"), widget=forms.NumberInput(attrs={'class':'form-control'}), required=True, initial=1, min_value=1,
         error_messages={'min_value': _("Number of choices must be positive.")},
     )
 
